@@ -661,3 +661,19 @@ footer {
 .lab-pic--router {
     filter: grayscale(1) brightness(0.35);
 }
+
+/* ═══ lab: мобильная раскладка (позже базовых lab-правил, побеждает по каскаду) ═══ */
+@media (max-width: 560px) {
+    .lab-wrap {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .lab-map {
+        max-width: 100%;
+    }
+
+    .lab-detail {
+        min-height: 0;
+    }
+}
