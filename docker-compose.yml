@@ -23,7 +23,7 @@ services:
     image: nginx:latest
     restart: unless-stopped
     ports:
-      - "${SITE_PORT:-8081}:80"
+      - "${SITE_PORT:-127.0.0.1:8081}:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/staticfiles

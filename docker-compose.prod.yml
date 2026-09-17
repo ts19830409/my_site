@@ -1,5 +1,6 @@
-# Продакшн-оверлей для VPS: локальная БД + публикация на гостевом 8081 (loopback).
-# Системный nginx (80/443, ts-dev27.ru) проксирует / на 127.0.0.1:8081.
+# Продакшн-оверлей для VPS: локальная БД (postgres) + healthcheck.
+# Порт публикации nginx задан в base-конфиге 127.0.0.1:8081 (SITE_PORT),
+# системный nginx (80/443, ts-dev27.ru) проксирует / на 127.0.0.1:8081.
 # Использование: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 services:
   db:
@@ -22,10 +23,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-  nginx:
-    ports:
-      - "127.0.0.1:8081:80"
 
 volumes:
   db_volume:
