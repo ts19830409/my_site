@@ -55,7 +55,7 @@ jobs:
         run: |
           if curl -fsSL -o /tmp/media-bundle.tar.gz https://github.com/ts19830409/my_site/releases/latest/download/media-bundle.tar.gz; then
             docker compose -f docker-compose.yml -f docker-compose.prod.yml exec -T web \
-              tar -xzf - -C /app/media < /tmp/media-bundle.tar.gz
+              sh -c 'find /app/media -mindepth 1 -maxdepth 1 -exec rm -rf {} + && tar -xzf - --strip-components=1 -C /app/media' < /tmp/media-bundle.tar.gz
           else
             echo "нет бандла медиа в релизах — пропускаю"
           fi
