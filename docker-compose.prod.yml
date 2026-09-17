@@ -1,0 +1,30 @@
+# Продакшн-оверлей для VPS: локальная БД + публикация на 80-м порту.
+# Использование: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    mem_limit: 512m
+
+  web:
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    ports:
+      - "80:80"
+
+volumes:
+  db_volume:
