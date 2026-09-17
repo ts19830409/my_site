@@ -24,8 +24,7 @@ jobs:
           cat > .env << ENVEOF
           SECRET_KEY=${{ secrets.SECRET_KEY }}
           DEBUG=False
-          ALLOWED_HOSTS=188.120.238.62,localhost
-          SITE_PORT=80
+          ALLOWED_HOSTS=ts-dev27.ru,www.ts-dev27.ru,localhost
           NAME=my_site_db
           DB_USER=postgres
           PASSWORD=${{ secrets.DB_PASSWORD }}
