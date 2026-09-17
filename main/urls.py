@@ -13,4 +13,5 @@ urlpatterns = [
     path("contacts/", views.contacts, name="contacts"),
     path("awards/", views.awards, name="awards"),
     path('lab/', views.lab, name='lab'),
+    path("favicon.ico", views.favicon, name="favicon"),
 ]

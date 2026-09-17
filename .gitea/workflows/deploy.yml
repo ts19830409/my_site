@@ -1,0 +1,31 @@
+name: CI и Деплой my_site
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    uses: ts19830409/ci-templates/.gitea/workflows/test.yml@main
+    with:
+      project_name: my_site
+      django_settings_module: 'config.settings'
+      test_command: 'python manage.py test'
+      use_database: 'true'
+
+  deploy:
+    needs: test
+    uses: ts19830409/ci-templates/.gitea/workflows/deploy.yml@main
+    with:
+      project_name: my_site
+    secrets:
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      HOST: ${{ secrets.HOST }}
+      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}

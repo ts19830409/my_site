@@ -1,9 +1,20 @@
 from django.contrib import messages
 from django.conf import settings
+from django.contrib.staticfiles import finders
 from django.core.mail import EmailMessage
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Award, Certificate, Message, Project
+
+
+def favicon(request):
+    path = finders.find("img/favicon.ico")
+    if not path:
+        raise Http404("favicon not found")
+    response = FileResponse(open(path, "rb"), content_type="image/x-icon")
+    response["Cache-Control"] = "public, max-age=604800"
+    return response
 
 
 def index(request):
