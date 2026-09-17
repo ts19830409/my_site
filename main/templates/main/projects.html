@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}Проекты{% endblock %}
+{% block content %}
+<h1>Проекты</h1>
+<ul>
+  {% for project in projects %}
+    <li><a href="{% url 'main:project_detail' project.pk %}">{{ project.title }}</a></li>
+  {% empty %}
+    <li>Данная страница находится в разработке</li>
+  {% endfor %}
+</ul>
+{% endblock %}

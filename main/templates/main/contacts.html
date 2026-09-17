@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% block title %}Мои профили{% endblock %}
+{% block content %}
+<h1>Мои профили</h1>
+
+<div class="contact-cards">
+  <div class="cert-card contact-card--neon">
+    <div class="contact-card-slot">
+      <p>E-mail: tsoyaleksey19830409@gmail.com</p>
+      <p>Telegram: @ts19830409</p>
+      <p>Stepik: <a href="https://stepik.org/users/609234069/profile" target="_blank" rel="noopener noreferrer">https://stepik.org/users/609234069/profile</a></p>
+      <p>GitHub: <a href="https://github.com/ts19830409" target="_blank" rel="noopener noreferrer">https://github.com/ts19830409</a></p>
+    </div>
+  </div>
+</div>
+
+<h2>Написать мне</h2>
+
+<form method="post" class="contact-form">
+  {% csrf_token %}
+  <label>Ваше имя:
+    <input type="text" name="name" required>
+  </label>
+  <label>Ваш e-mail:
+    <input type="email" name="email" required>
+  </label>
+  <label>Сообщение:
+    <textarea name="text" rows="6" required></textarea>
+  </label>
+  <button type="submit">Отправить</button>
+</form>
+{% endblock %}

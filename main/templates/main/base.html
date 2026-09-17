@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ts-dev27.ru{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="{% url 'main:index' %}">Главная</a>
+            <a href="{% url 'main:lab' %}">Инфраструктура</a>
+            <a href="{% url 'main:projects' %}">Проекты</a>
+            <a href="{% url 'main:certificates' %}">Портфолио</a>
+            <a href="{% url 'main:awards' %}">Поощрения</a>
+            <a href="{% url 'main:contacts' %}">Мои профили</a>
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+        <div class="toast-container">
+            {% for message in messages %}
+            <div class="toast toast--{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2026</p>
+    </footer>
+
+    <script src="{% static 'js/matrix.js' %}"></script>
+
+    <script>
+        document.querySelectorAll('.toast').forEach(function (el) {
+            setTimeout(function () {
+                el.style.transition = 'opacity 0.5s, transform 0.5s';
+                el.style.opacity = '0';
+                el.style.transform = 'translateX(30px)';
+                setTimeout(function () { el.remove(); }, 500);
+            }, 4000);
+        });
+    </script>
+
+</body>
+
+</html>

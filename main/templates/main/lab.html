@@ -1,0 +1,97 @@
+{% extends 'main/base.html' %}
+{% block title %}Инфраструктура{% endblock %}
+{% block content %}
+<h1>Домашняя инфраструктура</h1>
+
+<div class="lab-wrap">
+  <svg id="lab-map" viewBox="45 0 500 560" class="lab-map">
+
+    <g class="lab-cloud">
+      <circle class="lab-cloud-shape" cx="150" cy="108" r="38"></circle>
+      <circle class="lab-cloud-shape" cx="205" cy="86" r="50"></circle>
+      <circle class="lab-cloud-shape" cx="295" cy="78" r="60"></circle>
+      <circle class="lab-cloud-shape" cx="385" cy="88" r="48"></circle>
+      <circle class="lab-cloud-shape" cx="438" cy="108" r="36"></circle>
+      <rect class="lab-cloud-shape" x="108" y="102" width="375" height="42" rx="20"></rect>
+    </g>
+    <text class="lab-zone-label lab-zone-label--white" x="295" y="80" text-anchor="middle">интернет</text>
+
+    <rect class="lab-zone lab-zone--lan" x="50" y="160" width="490" height="315" rx="18"></rect>
+    <text class="lab-zone-label lab-zone-label--black" x="515" y="455" text-anchor="end">локальная сеть</text>
+
+    <g class="lab-legend">
+      <line x1="50" y1="497" x2="82" y2="497" class="lab-edge--wg"></line>
+      <text x="90" y="504" class="lab-zone-label lab-zone-label--black">WireGuard · шифрованный туннель</text>
+    </g>
+    <g class="lab-legend">
+      <line x1="50" y1="517" x2="82" y2="517" class="lab-edge--internet"></line>
+      <text x="90" y="524" class="lab-zone-label lab-zone-label--black">канал провайдера</text>
+    </g>
+    <g class="lab-legend">
+      <line x1="50" y1="537" x2="82" y2="537" class="lab-edge"></line>
+      <text x="90" y="544" class="lab-zone-label lab-zone-label--black">локальное соединение</text>
+    </g>
+
+    {% for e in edges %}
+    <line class="lab-edge{% if e.wg %} lab-edge--wg{% elif e.internet %} lab-edge--internet{% endif %}" x1="{{ e.x1 }}" y1="{{ e.y1 }}" x2="{{ e.x2 }}" y2="{{ e.y2 }}" />
+    {% endfor %}
+
+    {% for n in nodes %}
+    <g class="lab-node" transform="translate({{ n.x }} {{ n.y }})" data-name="{{ n.name }}" data-label="{{ n.label|default:'' }}" data-role="{{ n.role }}" data-os="{{ n.os }}" data-po="{{ n.po }}" data-disks="{% for d in n.disks %}{{ d.0 }}{% if d.1 %} — {{ d.1 }}{% endif %}&#10;{% endfor %}">
+      {% if n.icon == "cloud" %}
+      <ellipse class="lab-node-oval" rx="32" ry="18"></ellipse>
+      <text text-anchor="middle" x="0" y="0" dominant-baseline="central" class="lab-node-name">{{ n.name }}</text>
+      {% else %}
+      <text text-anchor="middle" x="0" y="0" class="lab-pic{% if n.icon == 'router' %} lab-pic--router{% endif %}">
+        {% if n.icon == "pc" %}🖥️
+        {% elif n.icon == "media" %}📺
+        {% elif n.icon == "server" %}🗄️
+        {% elif n.icon == "vm" %}📦
+        {% elif n.icon == "laptop" %}💻
+        {% elif n.icon == "wg" %}🛡️
+        {% elif n.icon == "router" %}🌐
+        {% else %}❓{% endif %}
+      </text>
+      <text text-anchor="middle" x="0" y="34" class="lab-tname">{{ n.name }}</text>
+      {% endif %}
+    </g>
+    {% endfor %}
+  </svg>
+  <aside class="lab-detail" id="lab-detail">
+    <p class="lab-placeholder">Наведи на узел</p>
+  </aside>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var detail = document.getElementById('lab-detail');
+  var placeholder = '<p class="lab-placeholder">Наведи на узел</p>';
+  var nodes = document.querySelectorAll('.lab-node');
+  nodes.forEach(function (node) {
+    node.addEventListener('mouseenter', function () {
+      var d = node.dataset;
+      var html = '<h2>' + (d.label || d.name) + '</h2>' +
+        '<p class="role">' + d.role + '</p>';
+      if (d.os) {
+        html += '<p class="os">' + d.os + '</p>';
+      }
+      if (d.po) {
+        html += '<h3>ПО:</h3>' +
+          '<p class="po">' + d.po + '</p>';
+      }
+      if (d.disks) {
+        html += '<h3>Диски:</h3>' +
+          '<ul class="disks">' +
+          (d.disks || '').split('\n').filter(function (s) { return s.trim(); })
+          .map(function (s) { return '<li>- ' + s + '</li>'; }).join('') +
+          '</ul>';
+      }
+      detail.innerHTML = html;
+    });
+    node.addEventListener('mouseleave', function () {
+      detail.innerHTML = placeholder;
+    });
+  });
+});
+</script>
+{% endblock %}

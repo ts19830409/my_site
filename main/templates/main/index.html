@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+{% load static %}
+<section class="hero">
+  <div class="hero__avatar">
+    <img src="{% static 'img/avatar.jpeg' %}" alt="Алексей">
+  </div>
+  <div class="hero__text">
+    <h1 class="hero__title">Привет, я Алексей!..</h1>
+    <div class="stripe-divider"></div>
+  </div>
+</section>
+
+<section class="about">
+  <p>Программист по образованию, но системный администратор по воле судьбы — с более чем 20-летним стажем в IT.</p>
+  <p>Умею видеть инфраструктуру целиком — от серверов и сетей до виртуализации и баз данных.</p>
+  <p>Люблю не просто поддерживать системы, а находить узкие места, автоматизировать рутину и делать инфраструктуру надёжнее.</p>
+  <p>Сейчас развиваюсь в Python, backend и DevOps — с практикой на собственной домашней инфраструктуре.</p>
+  <p>Ищу интересные задачи и возможность работать удалённо.</p>
+</section>
+{% endblock %}

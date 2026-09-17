@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% block title %}Поощрения{% endblock %}
+{% block content %}
+{% load static %}
+<h1>Поощрения</h1>
+
+<div class="certificates">
+  {% for a in awards %}
+    <div class="cert-card">
+      <span class="cert-close">&times;</span>
+      <img src="{{ a.image.url }}" alt="{{ a.title }}">
+      <p>{{ a.title }}</p>
+    </div>
+  {% empty %}
+    <p>Пока нет</p>
+  {% endfor %}
+</div>
+
+<script src="{% static 'js/certs.js' %}"></script>
+{% endblock %}

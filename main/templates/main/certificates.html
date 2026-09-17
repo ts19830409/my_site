@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% block title %}Сертификаты{% endblock %}
+{% block content %}
+{% load cert_extras %}
+{% load static %}
+<div class="page-header">
+  <h1>Портфолио</h1>
+  <p class="archive-link">
+    <a href="{% url 'main:certificates_archive' %}">Архив</a>
+  </p>
+</div>
+
+<h2>Актуальные</h2>
+
+<div class="certificates cert-portfolio">
+  {% for cert in certificates %}
+    <div class="cert-card">
+      <span class="cert-close">&times;</span>
+      <img src="{{ cert.image.url }}" alt="{{ cert.title }}">
+      <p>{{ cert.title|first_space_br }}</p>
+    </div>
+  {% empty %}
+    <p>Актуальных сертификатов пока нет</p>
+  {% endfor %}
+</div>
+
+<script src="{% static 'js/certs.js' %}"></script>
+{% endblock %}
